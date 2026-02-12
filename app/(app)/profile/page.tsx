@@ -1,0 +1,153 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { toast } from "sonner"
+import { Loader2 } from "lucide-react"
+
+export default function ProfilePage() {
+    const [loading, setLoading] = useState(true)
+    const [saving, setSaving] = useState(false)
+    const [profile, setProfile] = useState<any>(null)
+    const supabase = createClient()
+
+    useEffect(() => {
+        getProfile()
+    }, [])
+
+    async function getProfile() {
+        try {
+            setLoading(true)
+            const { data: { user } } = await supabase.auth.getUser()
+            if (!user) return
+
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single()
+
+            if (error && error.code !== 'PGRST116') {
+                console.error(error)
+            }
+
+            if (data) {
+                setProfile(data)
+            } else {
+                // If no profile exists, use basic user metadata or empty defaults
+                setProfile({
+                    id: user.id,
+                    full_name: user.user_metadata?.full_name || '',
+                    avatar_url: user.user_metadata?.avatar_url || '',
+                    username: user.email?.split('@')[0],
+                    website: ''
+                })
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function updateProfile(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        setSaving(true)
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (!user) throw new Error('No user')
+
+            const updates = {
+                id: user.id,
+                full_name: profile.full_name,
+                username: profile.username,
+                website: profile.website,
+                updated_at: new Date().toISOString(),
+            }
+
+            const { error } = await supabase.from('profiles').upsert(updates)
+
+            if (error) throw error
+            toast.success('Profil mis à jour !')
+        } catch (error) {
+            toast.error('Erreur lors de la mise à jour.')
+            console.error(error)
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    if (loading) {
+        return <div className="flex justify-center p-10"><Loader2 className="h-8 w-8 animate-spin" /></div>
+    }
+
+    return (
+        <div className="container max-w-2xl py-6 space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">Mon Profil</h1>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Informations Personnelles</CardTitle>
+                    <CardDescription>
+                        Gérez vos informations visibles par les autres membres.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={updateProfile} className="space-y-6">
+                        <div className="flex items-center gap-4">
+                            <Avatar className="h-20 w-20">
+                                <AvatarImage src={profile?.avatar_url} />
+                                <AvatarFallback className="text-lg">{profile?.full_name?.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <Button variant="outline" type="button" disabled>Changer la photo</Button>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input id="email" type="email" value={profile?.id ? "********" : ""} disabled placeholder="Email sécurisé" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="fullName">Nom complet</Label>
+                            <Input
+                                id="fullName"
+                                value={profile?.full_name || ''}
+                                onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="username">Nom d'utilisateur</Label>
+                            <Input
+                                id="username"
+                                value={profile?.username || ''}
+                                onChange={(e) => setProfile({ ...profile, username: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="website">Site Web / Réseau Social</Label>
+                            <Input
+                                id="website"
+                                value={profile?.website || ''}
+                                onChange={(e) => setProfile({ ...profile, website: e.target.value })}
+                            />
+                        </div>
+
+                        <Button type="submit" disabled={saving}>
+                            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Enregistrer
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
