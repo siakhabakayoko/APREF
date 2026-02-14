@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
+import { ProfilePictureUpload } from "@/components/settings/profile-picture-upload"
 
 export default function ProfilePage() {
     const [loading, setLoading] = useState(true)
@@ -18,6 +18,7 @@ export default function ProfilePage() {
     const supabase = createClient()
 
     useEffect(() => {
+        console.log("🚀 ~ ProfilePage ~ useEffect:")
         getProfile()
     }, [])
 
@@ -25,7 +26,7 @@ export default function ProfilePage() {
         try {
             setLoading(true)
             const { data: { user } } = await supabase.auth.getUser()
-            if (!user) return
+            if (!user) return   
 
             const { data, error } = await supabase
                 .from('profiles')
@@ -38,6 +39,7 @@ export default function ProfilePage() {
             }
 
             if (data) {
+                console.log("🚀 ~ getProfile ~ data:", data)
                 setProfile(data)
             } else {
                 // If no profile exists, use basic user metadata or empty defaults
@@ -101,13 +103,11 @@ export default function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={updateProfile} className="space-y-6">
-                        <div className="flex items-center gap-4">
-                            <Avatar className="h-20 w-20">
-                                <AvatarImage src={profile?.avatar_url} />
-                                <AvatarFallback className="text-lg">{profile?.full_name?.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <Button variant="outline" type="button" disabled>Changer la photo</Button>
-                        </div>
+                        <ProfilePictureUpload
+                            userId={profile?.id}
+                            currentAvatarUrl={profile?.avatar_url}
+                            onUploadComplete={(url) => setProfile({ ...profile, avatar_url: url })}
+                        />
 
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
