@@ -3,12 +3,13 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { LayoutDashboard, Mail, Users, MessageSquare, CalendarCheck, LogOut } from "lucide-react"
+import { LayoutDashboard, Mail, Users, MessageSquare, CalendarCheck, LogOut, UserCog } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 const navItems = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard },
+  { href: "/admin/users", label: "Utilisateurs", icon: UserCog },
   { href: "/admin/newsletters", label: "Newsletter", icon: Mail },
   { href: "/admin/memberships", label: "Adhésions", icon: Users },
   { href: "/admin/contacts", label: "Messages", icon: MessageSquare },
@@ -36,7 +37,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
             height={36}
             className="h-9 w-auto"
           />
-          <span className="font-serif text-lg font-bold text-foreground">APREF Admin</span>
+
         </Link>
       </div>
 

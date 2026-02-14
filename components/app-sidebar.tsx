@@ -78,7 +78,7 @@ export function AppSidebar() {
                         height={32}
                         className="h-8 w-auto"
                     />
-                    <span className="group-data-[collapsible=icon]:hidden">APREF Connect</span>
+
                 </div>
             </SidebarHeader>
             <SidebarContent>
