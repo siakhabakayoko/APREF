@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client" // Ensure this path is correct
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -45,7 +46,14 @@ export function LoginForm() {
 
     return (
         <Card>
-            <CardHeader>
+            <CardHeader className="space-y-4 flex flex-col items-center text-center">
+                <Image
+                    src="/logo.png"
+                    alt="APREF Logo"
+                    width={180}
+                    height={60}
+                    className="h-12 w-auto mb-2"
+                />
                 <CardTitle className="text-2xl">Connexion APREF</CardTitle>
                 <CardDescription>
                     Entrez votre email professionnel pour accéder à l'espace membre.
@@ -84,7 +92,7 @@ export function LoginForm() {
                         />
                     </div>
                 </CardContent>
-                <CardFooter className="flex flex-col gap-2">
+                <CardFooter className="flex flex-col gap-2 pt-6">
                     <Button className="w-full" type="submit" disabled={loading}>
                         {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                         Se connecter
