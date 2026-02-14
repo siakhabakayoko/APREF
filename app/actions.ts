@@ -20,6 +20,10 @@ export async function subscribeNewsletter(formData: FormData) {
     if (error.code === "23505") {
       return { error: "Cette adresse email est déjà inscrite." }
     }
+    console.error("Error subscribing to newsletter:", error);
+    if (error.code === "23505") {
+      return { error: "Cette adresse email est déjà inscrite." }
+    }
     return { error: "Une erreur est survenue. Veuillez réessayer." }
   }
 
@@ -43,6 +47,7 @@ export async function submitContactMessage(formData: FormData) {
     .insert({ full_name, email, subject: subject || null, message })
 
   if (error) {
+    console.error("Error submitting contact message:", error);
     return { error: "Une erreur est survenue. Veuillez réessayer." }
   }
 
@@ -76,6 +81,10 @@ export async function submitMembershipRequest(formData: FormData) {
     if (error.code === "23505") {
       return { error: "Une demande d'adhésion avec cette adresse email existe déjà." }
     }
+    console.error("Error submitting membership request:", error);
+    if (error.code === "23505") {
+      return { error: "Une demande d'adhésion avec cette adresse email existe déjà." }
+    }
     return { error: "Une erreur est survenue. Veuillez réessayer." }
   }
 
@@ -106,6 +115,7 @@ export async function registerForEvent(formData: FormData) {
     })
 
   if (error) {
+    console.error("Error registering for event:", error);
     if (error.code === "23505") {
       return { error: "Vous êtes déjà inscrit à cet événement." }
     }
