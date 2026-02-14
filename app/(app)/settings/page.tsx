@@ -1,16 +1,48 @@
-"use client"
-
+import { createClient } from "@/lib/supabase/server"
+import { ProfilePictureUpload } from "@/components/settings/profile-picture-upload"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
-import { Bell, Moon, Shield, Globe } from "lucide-react"
+import { Bell, Moon, Shield, Globe, User } from "lucide-react"
 import { ChangePasswordDialog } from "@/components/settings/change-password-dialog"
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    let profile = null
+    if (user) {
+        const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+        profile = data
+    }
+
     return (
         <div className="container max-w-2xl py-6 space-y-6">
             <h1 className="text-3xl font-bold tracking-tight">Paramètres</h1>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><User className="h-5 w-5" /> Mon Profil</CardTitle>
+                    <CardDescription>
+                        Gérez votre identité visuelle et vos informations.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6 flex flex-col items-center">
+                    {user && (
+                        <ProfilePictureUpload
+                            userId={user.id}
+                            currentAvatarUrl={profile?.avatar_url}
+                            onUploadComplete={(url) => {
+                                "use server"
+                                // We could revalidatePath here if this was a server action, 
+                                // but since it's a client callback, we rely on client state updates in the component.
+                                // Or we can pass a server action to revalidate.
+                            }}
+                        />
+                    )}
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>
@@ -59,7 +91,6 @@ export default function SettingsPage() {
                     <div className="w-full">
                         <ChangePasswordDialog />
                     </div>
-                    <Button variant="outline" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50">Déconnexion de tous les appareils</Button>
                 </CardContent>
             </Card>
 
