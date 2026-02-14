@@ -41,6 +41,22 @@ export async function createUser(prevState: any, formData: FormData) {
             return { error: error.message }
         }
 
+        // Force password change for new admin-created users
+        if (user?.user) {
+            // Give trigger a moment or retry?
+            // Actually, we can just update it. The trigger runs synchronously usually?
+            // Let's rely on admin client to update the profile.
+            const { error: profileError } = await supabaseAdmin
+                .from('profiles')
+                .update({ must_change_password: true })
+                .eq('id', user.user.id)
+
+            if (profileError) {
+                console.error("Error setting force password change:", profileError)
+                // Non-blocking error, but good to know
+            }
+        }
+
         // Trigger user creation trigger (if needed/async) or ensure profile exists
         // The existing trigger in migration 20260209_init_profiles.sql handles profile creation on INSERT to auth.users
 

@@ -36,5 +36,15 @@ export async function updatePassword(formData: FormData) {
         return { error: "Une erreur est survenue lors de la mise à jour du mot de passe." }
     }
 
+    // Clear the force password change flag
+    const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ must_change_password: false })
+        .match({ id: (await supabase.auth.getUser()).data.user?.id }) // Ensure we tackle the right user, though RLS handles it
+
+    if (profileError) {
+        console.error("Error clearing force password flag:", profileError)
+    }
+
     return { success: "Votre mot de passe a été mis à jour avec succès." }
 }

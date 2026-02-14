@@ -18,8 +18,8 @@ import { toast } from "sonner"
 import { Loader2, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-export function ChangePasswordDialog() {
-    const [open, setOpen] = useState(false)
+export function ChangePasswordDialog({ force = false }: { force?: boolean }) {
+    const [open, setOpen] = useState(force)
     const [loading, setLoading] = useState(false)
     const router = useRouter()
 
@@ -35,25 +35,34 @@ export function ChangePasswordDialog() {
         } else {
             toast.success(result.success)
             setOpen(false)
-            // Optional: Redirect to login or refresh if needed, but usually not required for pw change only
+            if (force) {
+                router.refresh()
+            }
         }
 
         setLoading(false)
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button variant="outline">
-                    <Lock className="mr-2 h-4 w-4" />
-                    Modifier le mot de passe
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={open || force} onOpenChange={force ? undefined : setOpen}>
+            {!force && (
+                <DialogTrigger asChild>
+                    <Button variant="outline">
+                        <Lock className="mr-2 h-4 w-4" />
+                        Modifier le mot de passe
+                    </Button>
+                </DialogTrigger>
+            )}
+            <DialogContent className="sm:max-w-[425px]" onInteractOutside={force ? (e) => e.preventDefault() : undefined} onEscapeKeyDown={force ? (e) => e.preventDefault() : undefined}>
                 <DialogHeader>
-                    <DialogTitle>Modifier le mot de passe</DialogTitle>
+                    <DialogTitle>
+                        {force ? "Changement de mot de passe requis" : "Modifier le mot de passe"}
+                    </DialogTitle>
                     <DialogDescription>
-                        Entrez votre nouveau mot de passe ci-dessous.
+                        {force
+                            ? "Pour votre sécurité, vous devez changer votre mot de passe avant de continuer."
+                            : "Entrez votre nouveau mot de passe ci-dessous."
+                        }
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={onSubmit}>
