@@ -8,23 +8,22 @@ export default async function FeedPage() {
     // Get current user for role check and like status
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Check if admin
-    let isAdmin = false
-    if (user) {
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-        isAdmin = profile?.role === 'admin'
-    }
+    // Fetch posts without inner join constraint (if any)
+    // We use a simple select first to debug, but let's try to keep the author join
+    // If the foreign key is null, standard join might behave differently depending on Supabase version?
+    // Actually left join is default for this syntax.
 
-    // Fetch posts
-    const { data: posts } = await supabase
+    const { data: posts, error } = await supabase
         .from("posts")
         .select("*, author:profiles(*)")
         .order("is_urgent", { ascending: false }) // Urgent first
         .order("created_at", { ascending: false })
 
+    if (error) {
+        console.error("Error fetching feed:", error)
+    }
+
     // Check which posts are liked by current user
-    // We can do a second query or a join if possible.
-    // Simpler: fetch all likes for this user and map them.
     let likedPostIds = new Set()
     if (user) {
         const { data: likes } = await supabase
@@ -49,6 +48,10 @@ export default async function FeedPage() {
                 <p className="text-muted-foreground">
                     Les dernières informations officielles et veilles administratives.
                 </p>
+                {/* Debug info */}
+                {postsWithLikeStatus.length === 0 && (
+                    <p className="text-xs text-red-500">Debug: No posts found by app query. DB has 5.</p>
+                )}
             </div>
 
             <div className="space-y-4 max-w-2xl mx-auto">
