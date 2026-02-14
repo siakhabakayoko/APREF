@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Bell, Moon, Shield, Globe, User } from "lucide-react"
 import { ChangePasswordDialog } from "@/components/settings/change-password-dialog"
+import { revalidateProfile } from "@/app/actions/users"
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -33,11 +34,9 @@ export default async function SettingsPage() {
                         <ProfilePictureUpload
                             userId={user.id}
                             currentAvatarUrl={profile?.avatar_url}
-                            onUploadComplete={(url) => {
+                            onUploadComplete={async (url) => {
                                 "use server"
-                                // We could revalidatePath here if this was a server action, 
-                                // but since it's a client callback, we rely on client state updates in the component.
-                                // Or we can pass a server action to revalidate.
+                                await revalidateProfile()
                             }}
                         />
                     )}
