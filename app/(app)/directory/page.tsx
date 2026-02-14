@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { ProfileCard } from "@/components/profile-card"
 import { createClient } from "@/lib/supabase/server"
 import { DirectoryFilters } from "@/components/directory/directory-filters"
@@ -31,7 +32,9 @@ export default async function DirectoryPage({
                 </p>
             </div>
 
-            <DirectoryFilters />
+            <Suspense fallback={<div>Chargement des filtres...</div>}>
+                <DirectoryFilters />
+            </Suspense>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {profiles && profiles.length > 0 ? (
