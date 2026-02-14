@@ -2,6 +2,9 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users } from "lucide-react"
 import { MembershipActions } from "@/components/admin/membership-actions"
+import { ExportButton } from "@/components/admin/export-button"
+import { DeleteButton } from "@/components/admin/delete-button"
+import { deleteMembershipRequest } from "@/app/actions/admin"
 
 export default async function MembershipsAdminPage() {
   const supabase = await createClient()
@@ -29,8 +32,11 @@ export default async function MembershipsAdminPage() {
           <h1 className="font-serif text-3xl font-bold text-foreground">{"Demandes d'adhésion"}</h1>
           <p className="text-muted-foreground mt-1">{requests?.length || 0} demandes au total</p>
         </div>
-        <div className="w-12 h-12 rounded-lg bg-chart-4/10 flex items-center justify-center">
-          <Users className="w-6 h-6 text-chart-4" />
+        <div className="flex items-center gap-4">
+          <ExportButton data={requests || []} filename="adhesions.csv" />
+          <div className="w-12 h-12 rounded-lg bg-chart-4/10 flex items-center justify-center">
+            <Users className="w-6 h-6 text-chart-4" />
+          </div>
         </div>
       </div>
 
@@ -71,6 +77,14 @@ export default async function MembershipsAdminPage() {
                     {req.status === "pending" && (
                       <MembershipActions requestId={req.id} />
                     )}
+                    <DeleteButton
+                      id={req.id}
+                      onDelete={async (id) => {
+                        'use server'
+                        return await deleteMembershipRequest(id)
+                      }}
+                      itemName="cette demande"
+                    />
                   </div>
                 </div>
               ))}
