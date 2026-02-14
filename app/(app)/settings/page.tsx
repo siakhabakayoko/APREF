@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Bell, Moon, Shield, Globe } from "lucide-react"
+import { ChangePasswordDialog } from "@/components/settings/change-password-dialog"
 
 export default function SettingsPage() {
     return (
@@ -55,7 +56,9 @@ export default function SettingsPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <Button variant="outline" className="w-full justify-start">Changer de mot de passe</Button>
+                    <div className="w-full">
+                        <ChangePasswordDialog />
+                    </div>
                     <Button variant="outline" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50">Déconnexion de tous les appareils</Button>
                 </CardContent>
             </Card>
