@@ -14,6 +14,7 @@ interface User {
     email?: string
     created_at: string
     last_sign_in_at?: string
+    role?: string
     user_metadata: {
         full_name?: string
         [key: string]: any
@@ -40,6 +41,7 @@ export function UserList({ users }: UserListProps) {
                     <TableRow>
                         <TableHead>Utilisateur</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Rôle</TableHead>
                         <TableHead>Date d'inscription</TableHead>
                         <TableHead>Dernière connexion</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
@@ -52,6 +54,11 @@ export function UserList({ users }: UserListProps) {
                                 {user.user_metadata.full_name || "N/A"}
                             </TableCell>
                             <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                                <Badge variant={user.role === 'admin' ? "default" : "outline"}>
+                                    {user.role === 'admin' ? "Admin" : "Membre"}
+                                </Badge>
+                            </TableCell>
                             <TableCell>
                                 {new Date(user.created_at).toLocaleDateString("fr-FR", {
                                     day: "numeric",
@@ -73,7 +80,11 @@ export function UserList({ users }: UserListProps) {
                                 )}
                             </TableCell>
                             <TableCell className="text-right">
-                                <UserActions userId={user.id} userEmail={user.email || ""} />
+                                <UserActions
+                                    userId={user.id}
+                                    userEmail={user.email || ""}
+                                    isAdmin={user.role === 'admin'}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}

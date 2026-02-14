@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { MoreHorizontal, Trash, Loader2 } from "lucide-react"
-import { deleteUser } from "@/app/actions/users"
+import { MoreHorizontal, Trash, Loader2, UserCog, UserMinus } from "lucide-react"
+import { deleteUser, toggleAdminRole } from "@/app/actions/users"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -27,11 +27,13 @@ import { toast } from "sonner"
 interface UserActionsProps {
     userId: string
     userEmail: string
+    isAdmin: boolean
 }
 
-export function UserActions({ userId, userEmail }: UserActionsProps) {
+export function UserActions({ userId, userEmail, isAdmin }: UserActionsProps) {
     const [openDelete, setOpenDelete] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
+    const [isUpdatingRole, setIsUpdatingRole] = useState(false)
 
     const handleDelete = async () => {
         setIsDeleting(true)
@@ -50,6 +52,22 @@ export function UserActions({ userId, userEmail }: UserActionsProps) {
         }
     }
 
+    const handleToggleAdmin = async () => {
+        setIsUpdatingRole(true)
+        try {
+            const result = await toggleAdminRole(userId, !isAdmin)
+            if (result.error) {
+                toast.error(result.error)
+            } else {
+                toast.success(isAdmin ? "Rôle administrateur révoqué" : "Utilisateur promu administrateur")
+            }
+        } catch (error) {
+            toast.error("Une erreur est survenue")
+        } finally {
+            setIsUpdatingRole(false)
+        }
+    }
+
     return (
         <>
             <DropdownMenu>
@@ -61,6 +79,24 @@ export function UserActions({ userId, userEmail }: UserActionsProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={handleToggleAdmin}
+                        disabled={isUpdatingRole}
+                    >
+                        {isAdmin ? (
+                            <>
+                                <UserMinus className="mr-2 h-4 w-4" />
+                                Révoquer Admin
+                            </>
+                        ) : (
+                            <>
+                                <UserCog className="mr-2 h-4 w-4" />
+                                Promouvoir Admin
+                            </>
+                        )}
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-destructive focus:text-destructive cursor-pointer"

@@ -75,3 +75,25 @@ export async function deleteUser(userId: string) {
         return { error: "Une erreur inattendue est survenue." }
     }
 }
+
+export async function toggleAdminRole(userId: string, isAdmin: boolean) {
+    try {
+        const newRole = isAdmin ? 'admin' : 'member'
+
+        const { error } = await supabaseAdmin
+            .from('profiles')
+            .update({ role: newRole })
+            .eq('id', userId)
+
+        if (error) {
+            console.error("Error updating user role:", error)
+            return { error: error.message }
+        }
+
+        revalidatePath("/admin/users")
+        return { success: true }
+    } catch (err) {
+        console.error("Unexpected error:", err)
+        return { error: "Une erreur inattendue est survenue." }
+    }
+}

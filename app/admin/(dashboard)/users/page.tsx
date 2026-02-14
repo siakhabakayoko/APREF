@@ -16,10 +16,20 @@ export default async function UsersPage() {
         perPage: 100,
     })
 
+    // Fetch profiles to get roles
+    const { data: profiles } = await supabaseAdmin
+        .from("profiles")
+        .select("id, role")
+
+    const profilesMap = new Map(profiles?.map(p => [p.id, p.role]) || [])
+
     // Sort users by created_at desc
     const sortedUsers = users?.sort((a, b) =>
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    ) || []
+    ).map(user => ({
+        ...user,
+        role: profilesMap.get(user.id) || 'member'
+    })) || []
 
     return (
         <div className="space-y-8">
