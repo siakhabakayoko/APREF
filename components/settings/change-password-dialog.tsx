@@ -36,7 +36,7 @@ export function ChangePasswordDialog({ force = false }: { force?: boolean }) {
             toast.success(result.success)
             setOpen(false)
             if (force) {
-                router.refresh()
+                window.location.reload()
             }
         }
 
