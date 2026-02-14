@@ -3,14 +3,15 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { createPost } from "@/app/actions/feed"
 import { toast } from "sonner"
-import { Loader2, Send, AlertTriangle } from "lucide-react"
+import { Loader2, Send, AlertTriangle, PlusCircle } from "lucide-react"
 
 export function CreatePost() {
+    const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [content, setContent] = useState("")
     const [isUrgent, setIsUrgent] = useState(false)
@@ -28,22 +29,32 @@ export function CreatePost() {
             toast.success(result.success)
             setContent("")
             setIsUrgent(false)
+            setOpen(false)
         }
 
         setLoading(false)
     }
 
     return (
-        <Card className="mb-6 border-dashed">
-            <CardContent className="pt-6">
-                <form onSubmit={onSubmit} className="space-y-4">
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button className="w-full mb-6">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Créer une publication
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                    <DialogTitle>Nouvelle publication</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={onSubmit} className="space-y-4 mt-4">
                     <Textarea
                         name="content"
                         placeholder="Quoi de neuf ? Partagez une information..."
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
-                        className="resize-none min-h-[100px]"
+                        className="resize-none min-h-[150px]"
                     />
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
@@ -60,12 +71,12 @@ export function CreatePost() {
                         </div>
                         <Button type="submit" disabled={loading || !content.trim()}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            <Send className="mr-2 h-4 w-4" />
+                            {!loading && <Send className="mr-2 h-4 w-4" />}
                             Publier
                         </Button>
                     </div>
                 </form>
-            </CardContent>
-        </Card>
+            </DialogContent>
+        </Dialog>
     )
 }
