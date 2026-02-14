@@ -40,6 +40,7 @@ export function Header() {
                 key={item.label}
                 href={item.href}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                scroll={true}
               >
                 {item.label}
               </Link>
@@ -48,7 +49,16 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-4">
-            <Button className="hover:bg-secondary/90 text-secondary-foreground bg-chart-2">Adhérer</Button>
+            <Link href="/login">
+              <Button variant="ghost" className="hover:bg-secondary/10 text-foreground">
+                Connexion
+              </Button>
+            </Link>
+            <Link href="#contact">
+              <Button className="hover:bg-secondary/90 text-secondary-foreground bg-chart-2">
+                Adhérer
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -71,9 +81,16 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground mt-4 w-full">
-                Adhérer
-              </Button>
+              <Link href="/login">
+                <Button variant="outline" className="w-full mt-4">
+                  Connexion
+                </Button>
+              </Link>
+              <Link href="#contact" onClick={() => setIsOpen(false)}>
+                <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground mt-2 w-full">
+                  Adhérer
+                </Button>
+              </Link>
             </nav>
           </div>
         )}

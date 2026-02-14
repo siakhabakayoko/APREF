@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { ArrowRight, Users, Globe2, Calendar } from "lucide-react"
 import RotatingEarth from "@/components/rotating-earth"
 
@@ -19,10 +20,10 @@ export function HeroSection() {
         />
 
         {/* Blue glow - bottom right */}
-        
+
 
         {/* Violet glow - center right */}
-        
+
 
         {/* Orange glow - subtle accent top */}
         <div
@@ -58,13 +59,17 @@ export function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input">
-                Rejoindre l'APREF
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button size="lg" variant="outline" className="hover:bg-accent bg-transparent border-chart-2 text-chart-2">
-                En savoir plus
-              </Button>
+              <Link href="#contact">
+                <Button size="lg" className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input w-full sm:w-auto">
+                  Rejoindre l'APREF
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="#about">
+                <Button size="lg" variant="outline" className="hover:bg-accent bg-transparent border-chart-2 text-chart-2 w-full sm:w-auto">
+                  En savoir plus
+                </Button>
+              </Link>
             </div>
 
             {/* Stats */}
@@ -89,7 +94,7 @@ export function HeroSection() {
             <div className="relative w-full aspect-square">
               {/* Central Circle */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <RotatingEarth width={700} height={700} className="w-full h-full" />
+                <RotatingEarth className="w-full h-full" />
               </div>
 
               {/* Floating Cards */}
