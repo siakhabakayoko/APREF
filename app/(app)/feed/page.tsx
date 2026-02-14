@@ -52,7 +52,7 @@ export default async function FeedPage() {
             </div>
 
             <div className="space-y-4 max-w-2xl mx-auto">
-                {isAdmin && <CreatePost />}
+                {user && <CreatePost />}
 
                 {postsWithLikeStatus.length > 0 ? (
                     postsWithLikeStatus.map((post) => (

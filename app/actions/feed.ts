@@ -29,10 +29,13 @@ export async function createPost(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return { error: "Non authentifié" }
 
+    // Admin check removed to allow all members to post
+    /*
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
     if (profile?.role !== 'admin') {
         return { error: "Non autorisé" }
     }
+    */
 
     const { error } = await supabase.from('posts').insert({
         content: validatedFields.data.content,
