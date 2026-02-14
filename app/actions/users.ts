@@ -109,7 +109,11 @@ export async function toggleAdminRole(userId: string, isAdmin: boolean) {
         revalidatePath("/admin/users")
         return { success: true }
     } catch (err) {
-        console.error("Unexpected error:", err)
         return { error: "Une erreur inattendue est survenue." }
     }
+}
+
+export async function revalidateProfile() {
+    revalidatePath('/settings')
+    return { success: true }
 }
