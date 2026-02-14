@@ -15,7 +15,7 @@ export default async function FeedPage() {
 
     const { data: posts, error } = await supabase
         .from("posts")
-        .select("*, author:profiles(*)")
+        .select("*, author:profiles!posts_author_id_fkey(*)")
         .order("is_urgent", { ascending: false }) // Urgent first
         .order("created_at", { ascending: false })
 
