@@ -62,14 +62,14 @@ const teamMembers = [
     role: "Membre du bureau",
     title: "Gouverneur pour la gestion de crise",
     country: "Belgique",
-    image: "/professional-headshot.png",
+    image: "/2022-Sophie-Lavaux-1-2048x2048.jpg.jpeg",
   },
   {
     name: "Eric DJENDJA",
     role: "Membre du bureau",
     title: "Directeur Général du Développement Local",
     country: "Congo Brazzaville",
-    image: "/Eric.png",
+    image: "/Eric djendja.png",
   },
   {
     name: "Patricia-Dominique LACHAT",
@@ -90,7 +90,7 @@ const teamMembers = [
     role: "Trésorier",
     title: "Préfet de la Vendée",
     country: "France",
-    image: "/placeholder-user.jpg",
+    image: "/Eric.png",
   },
 ]
 
