@@ -116,8 +116,8 @@ export function EventsSection() {
           <div className="bg-card rounded-3xl border border-border overflow-hidden">
             <div className="aspect-video bg-muted relative">
               <img
-                src="/public/1765816654791.jpeg"
-                alt="Forum de Paris 2023"
+                src="/1765816654791.jpeg"
+                alt="Forum de Dakar 2025"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
