@@ -23,6 +23,8 @@ export function FeedItem({ post }: FeedItemProps) {
     const [showComments, setShowComments] = useState(false)
     const [comment, setComment] = useState("")
     const [commenting, setCommenting] = useState(false)
+    const [comments, setComments] = useState<any[]>([])
+    const [loadingComments, setLoadingComments] = useState(false)
 
     const handleLike = async () => {
         setLiking(true)
@@ -32,6 +34,32 @@ export function FeedItem({ post }: FeedItemProps) {
             toast.error(result.error)
         }
         setLiking(false)
+    }
+
+    const toggleComments = async () => {
+        if (!showComments) {
+            setShowComments(true)
+            if (comments.length === 0) {
+                setLoadingComments(true)
+                try {
+                    // Dynamically import to avoid server-client issues if needed, or just use the action
+                    const { getComments } = await import("@/app/actions/feed")
+                    const result = await getComments(post.id)
+                    if (result.success) {
+                        setComments(result.success)
+                    } else {
+                        toast.error("Impossible de charger les commentaires")
+                    }
+                } catch (error) {
+                    console.error(error)
+                    toast.error("Erreur")
+                } finally {
+                    setLoadingComments(false)
+                }
+            }
+        } else {
+            setShowComments(false)
+        }
     }
 
     const handleComment = async (e: React.FormEvent) => {
@@ -45,6 +73,12 @@ export function FeedItem({ post }: FeedItemProps) {
         } else {
             setComment("")
             toast.success("Commentaire ajouté")
+            // Refresh comments
+            const { getComments } = await import("@/app/actions/feed")
+            const commentsResult = await getComments(post.id)
+            if (commentsResult.success) {
+                setComments(commentsResult.success)
+            }
         }
         setCommenting(false)
     }
@@ -103,18 +137,39 @@ export function FeedItem({ post }: FeedItemProps) {
                         variant="ghost"
                         size="sm"
                         className="h-8 gap-1 text-muted-foreground"
-                        onClick={() => setShowComments(!showComments)}
+                        onClick={toggleComments}
                     >
                         <MessageCircle className="h-4 w-4" />
                         <span className="text-xs">{post.comments_count}</span>
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-8 text-muted-foreground">
-                        <Share2 className="h-4 w-4" />
                     </Button>
                 </div>
 
                 {showComments && (
                     <div className="w-full space-y-3 pt-2">
+                        <div className="space-y-4 max-h-60 overflow-y-auto px-1">
+                            {loadingComments ? (
+                                <p className="text-xs text-center text-muted-foreground py-2">Chargement...</p>
+                            ) : comments.length > 0 ? (
+                                comments.map((c: any) => (
+                                    <div key={c.id} className="flex gap-3 text-sm">
+                                        <Avatar className="h-6 w-6">
+                                            <AvatarImage src={c.author?.avatar_url} />
+                                            <AvatarFallback className="text-[10px]">{c.author?.full_name?.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="bg-muted p-2 rounded-lg flex-1">
+                                            <div className="flex justify-between items-baseline">
+                                                <span className="font-semibold text-xs">{c.author?.full_name}</span>
+                                                <span className="text-[10px] text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</span>
+                                            </div>
+                                            <p className="text-xs mt-1">{c.content}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-xs text-center text-muted-foreground py-2">Aucun commentaire</p>
+                            )}
+                        </div>
+
                         <form onSubmit={handleComment} className="flex gap-2">
                             <Input
                                 placeholder="Écrire un commentaire..."
@@ -126,7 +181,6 @@ export function FeedItem({ post }: FeedItemProps) {
                                 <Send className="h-4 w-4" />
                             </Button>
                         </form>
-                        {/* We could fetch comments here if we had a sub-component or server fetch */}
                     </div>
                 )}
             </CardFooter>

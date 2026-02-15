@@ -117,3 +117,23 @@ export async function addComment(postId: string, content: string) {
     revalidatePath("/feed")
     return { success: true }
 }
+
+export async function getComments(postId: string) {
+    const supabase = await createClient()
+
+    const { data: comments, error } = await supabase
+        .from('post_comments')
+        .select(`
+            *,
+            author:profiles(*)
+        `)
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true })
+
+    if (error) {
+        console.error("Error fetching comments:", error)
+        return { error: "Impossible de charger les commentaires" }
+    }
+
+    return { success: comments }
+}
