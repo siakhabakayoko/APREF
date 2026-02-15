@@ -6,7 +6,7 @@ const teamMembers = [
     role: "Président",
     title: "Préfet du district de Nyon",
     country: "Suisse",
-    image: "/placeholder-user.jpg",
+    image: "/public/Olivier Fargeon.png",
   },
   {
     name: "Nicolas DESFORGES",
