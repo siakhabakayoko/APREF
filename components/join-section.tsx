@@ -4,15 +4,13 @@ import React from "react"
 
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Mail, FileText, Users, CheckCircle, AlertCircle } from "lucide-react"
-import { submitContactMessage, submitMembershipRequest } from "@/app/actions"
+import { submitContactMessage } from "@/app/actions"
+import { MembershipModal } from "@/components/membership-modal"
 import { useState } from "react"
 
 export function JoinSection() {
   const [contactStatus, setContactStatus] = useState<{ success?: string; error?: string } | null>(null)
   const [contactLoading, setContactLoading] = useState(false)
-  const [membershipStatus, setMembershipStatus] = useState<{ success?: string; error?: string } | null>(null)
-  const [membershipLoading, setMembershipLoading] = useState(false)
-  const [showMembershipForm, setShowMembershipForm] = useState(false)
 
   async function handleContact(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -25,19 +23,7 @@ export function JoinSection() {
     if (result.success) e.currentTarget.reset()
   }
 
-  async function handleMembership(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setMembershipLoading(true)
-    setMembershipStatus(null)
-    const formData = new FormData(e.currentTarget)
-    const result = await submitMembershipRequest(formData)
-    setMembershipStatus(result)
-    setMembershipLoading(false)
-    if (result.success) {
-      e.currentTarget.reset()
-      setTimeout(() => setShowMembershipForm(false), 3000)
-    }
-  }
+
 
   return (
     <section id="contact" className="py-20 md:py-32 bg-background">
@@ -86,55 +72,7 @@ export function JoinSection() {
               </div>
             </div>
 
-            <Button
-              size="lg"
-              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground gap-2 mt-6"
-              onClick={() => setShowMembershipForm(!showMembershipForm)}
-            >
-              {showMembershipForm ? "Fermer le formulaire" : "Demande d'adhésion"}
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-
-            {showMembershipForm && (
-              <form onSubmit={handleMembership} className="mt-6 bg-card rounded-2xl border border-border p-6 space-y-4">
-                <h4 className="font-serif text-lg font-bold text-foreground">{"Formulaire d'adhésion"}</h4>
-                <div>
-                  <label htmlFor="m_name" className="block text-sm font-medium text-foreground mb-2">Nom complet *</label>
-                  <input type="text" id="m_name" name="full_name" required className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" placeholder="Votre nom complet" />
-                </div>
-                <div>
-                  <label htmlFor="m_email" className="block text-sm font-medium text-foreground mb-2">Email *</label>
-                  <input type="email" id="m_email" name="email" required className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" placeholder="votre@email.com" />
-                </div>
-                <div>
-                  <label htmlFor="m_country" className="block text-sm font-medium text-foreground mb-2">Pays *</label>
-                  <input type="text" id="m_country" name="country" required className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" placeholder="Ex: France" />
-                </div>
-                <div>
-                  <label htmlFor="m_position" className="block text-sm font-medium text-foreground mb-2">Fonction actuelle *</label>
-                  <input type="text" id="m_position" name="current_position" required className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" placeholder="Ex: Préfet de la région..." />
-                </div>
-                <div>
-                  <label htmlFor="m_motivation" className="block text-sm font-medium text-foreground mb-2">Motivation</label>
-                  <textarea id="m_motivation" name="motivation" rows={3} className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none" placeholder="Pourquoi souhaitez-vous rejoindre l'APREF ?" />
-                </div>
-                <Button type="submit" disabled={membershipLoading} className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-                  {membershipLoading ? "Envoi en cours..." : "Soumettre ma candidature"}
-                </Button>
-                {membershipStatus?.success && (
-                  <div className="flex items-center gap-2 text-green-600 text-sm">
-                    <CheckCircle className="w-4 h-4" />
-                    {membershipStatus.success}
-                  </div>
-                )}
-                {membershipStatus?.error && (
-                  <div className="flex items-center gap-2 text-destructive text-sm">
-                    <AlertCircle className="w-4 h-4" />
-                    {membershipStatus.error}
-                  </div>
-                )}
-              </form>
-            )}
+            <MembershipModal />
           </div>
 
           {/* Right Content - Contact Card */}
