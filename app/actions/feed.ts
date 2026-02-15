@@ -4,9 +4,11 @@ import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 
+
 const createPostSchema = z.object({
     content: z.string().min(1, { message: "Le contenu ne peut pas être vide" }),
     isUrgent: z.boolean().optional(),
+    imageUrl: z.string().optional(),
 })
 
 export async function createPost(formData: FormData) {
@@ -14,10 +16,12 @@ export async function createPost(formData: FormData) {
 
     const content = formData.get("content") as string
     const isUrgent = formData.get("isUrgent") === "on"
+    const imageUrl = formData.get("imageUrl") as string
 
     const validatedFields = createPostSchema.safeParse({
         content,
         isUrgent,
+        imageUrl,
     })
 
     if (!validatedFields.success) {
@@ -40,8 +44,10 @@ export async function createPost(formData: FormData) {
     const { error } = await supabase.from('posts').insert({
         content: validatedFields.data.content,
         is_urgent: validatedFields.data.isUrgent,
+        image_url: validatedFields.data.imageUrl,
         author_id: user.id
     })
+
 
     if (error) {
         console.error("Error creating post:", error)

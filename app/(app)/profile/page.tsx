@@ -26,7 +26,7 @@ export default function ProfilePage() {
         try {
             setLoading(true)
             const { data: { user } } = await supabase.auth.getUser()
-            if (!user) return   
+            if (!user) return
 
             const { data, error } = await supabase
                 .from('profiles')
@@ -47,8 +47,14 @@ export default function ProfilePage() {
                     id: user.id,
                     full_name: user.user_metadata?.full_name || '',
                     avatar_url: user.user_metadata?.avatar_url || '',
+
                     username: user.email?.split('@')[0],
-                    website: ''
+                    website: '',
+                    role: '',
+                    country: '',
+                    region: '',
+                    bio: '',
+                    expertise: []
                 })
             }
         } catch (error) {
@@ -69,8 +75,14 @@ export default function ProfilePage() {
             const updates = {
                 id: user.id,
                 full_name: profile.full_name,
+
                 username: profile.username,
                 website: profile.website,
+                role: profile.role,
+                country: profile.country,
+                region: profile.region,
+                bio: profile.bio,
+                expertise: profile.expertise,
                 updated_at: new Date().toISOString(),
             }
 
@@ -132,6 +144,7 @@ export default function ProfilePage() {
                             />
                         </div>
 
+
                         <div className="space-y-2">
                             <Label htmlFor="website">Site Web / Réseau Social</Label>
                             <Input
@@ -140,6 +153,58 @@ export default function ProfilePage() {
                                 onChange={(e) => setProfile({ ...profile, website: e.target.value })}
                             />
                         </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="role">Fonction / Rôle</Label>
+                                <Input
+                                    id="role"
+                                    placeholder="Ex: Préfet, Gouverneur..."
+                                    value={profile?.role || ''}
+                                    onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="country">Pays</Label>
+                                <Input
+                                    id="country"
+                                    value={profile?.country || ''}
+                                    onChange={(e) => setProfile({ ...profile, country: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="region">Région / Ville</Label>
+                            <Input
+                                id="region"
+                                value={profile?.region || ''}
+                                onChange={(e) => setProfile({ ...profile, region: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="expertise">Expertise (séparées par des virgules)</Label>
+                            <Input
+                                id="expertise"
+                                placeholder="Ex: Gestion de crise, Sécurité civile, Administration..."
+                                value={Array.isArray(profile?.expertise) ? profile.expertise.join(', ') : (profile?.expertise || '')}
+                                onChange={(e) => setProfile({ ...profile, expertise: e.target.value.split(',').map((s: string) => s.trim()) })}
+                            />
+                            <p className="text-xs text-muted-foreground">Séparez vos domaines d'expertise par des virgules.</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="bio">Biographie</Label>
+                            <Textarea
+                                id="bio"
+                                placeholder="Présentez-vous en quelques lignes..."
+                                className="min-h-[100px]"
+                                value={profile?.bio || ''}
+                                onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                            />
+                        </div>
+
 
                         <Button type="submit" disabled={saving}>
                             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
