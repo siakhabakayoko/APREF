@@ -11,7 +11,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-6">
               <Image
-                src="/images/apref-footer-logo.png"
+                src="/logo.png"
                 alt="APREF Logo"
                 width={240}
                 height={60}
