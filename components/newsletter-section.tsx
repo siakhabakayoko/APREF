@@ -97,7 +97,6 @@ export function NewsletterSection() {
                 src="https://www.canva.com/design/DAG_asNVORY/lkxRlf97HJ3XvUeSNOlOzw/view?embed" allowFullScreen allow="fullscreen">
               </iframe>
             </div>
-            <a href="https://www.canva.com/design/DAG_asNVORY/lkxRlf97HJ3XvUeSNOlOzw/view?utm_content=DAG_asNVORY&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener noreferrer">
           </div>
         </div>
       </div>
