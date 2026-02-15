@@ -133,13 +133,13 @@ export default function RotatingEarth({ className = "" }: RotatingEarthProps) {
       if (landFeatures) {
         const gradient = context.createLinearGradient(0, 0, containerSize, containerSize)
 
-        gradient.addColorStop(0, "#040409") // Black
-        gradient.addColorStop(0.2, "#2B4CBA") // Chart 5 - Blue
-        gradient.addColorStop(0.4, "#ffffff") // White
-        gradient.addColorStop(0.5, "#EE5D17") // Back to Orange
-        gradient.addColorStop(0.7, "#ff0000") // Chart 3 - Red
-        gradient.addColorStop(0.9, "#611FFF") // Chart 4 - Violet
-        gradient.addColorStop(1, "#009C89") // Chart 2 - Teal
+        gradient.addColorStop(0, "#EE5D17") // Chart 1 - Orange
+        gradient.addColorStop(0.2, "#009C89") // Chart 2 - Teal
+        gradient.addColorStop(0.4, "#611FFF") // Chart 4 - Violet
+        gradient.addColorStop(0.6, "#ff0000") // Chart 3 - Red
+        gradient.addColorStop(0.8, "#2B4CBA") // Chart 5 - Blue
+        gradient.addColorStop(0.9, "#ffffff") // White
+        gradient.addColorStop(1, "#EE5D17") // Back to Orange
 
         const graticule = d3.geoGraticule()
         context.beginPath()
