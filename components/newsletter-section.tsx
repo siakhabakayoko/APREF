@@ -68,7 +68,7 @@ export function NewsletterSection() {
                   name="email"
                   required
                   placeholder="Votre adresse email"
-                  className="flex-1 px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                 />
                 <Button type="submit" disabled={loading} className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input">
                   {loading ? "Envoi..." : "S'inscrire"}
@@ -96,9 +96,8 @@ export function NewsletterSection() {
               {[12, 11, 10, 9].map((num, index) => (
                 <div
                   key={num}
-                  className={`bg-card rounded-xl border border-border p-6 hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer ${
-                    index === 0 ? "ring-2 ring-secondary" : ""
-                  }`}
+                  className={`bg-card rounded-xl border border-border p-6 hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer ${index === 0 ? "ring-2 ring-secondary" : ""
+                    }`}
                 >
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-border">
                     <FileText className="w-6 h-6 text-primary" />
