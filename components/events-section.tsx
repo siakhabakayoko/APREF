@@ -116,7 +116,7 @@ export function EventsSection() {
           <div className="bg-card rounded-3xl border border-border overflow-hidden">
             <div className="aspect-video bg-muted relative">
               <img
-                src="/images/image.png"
+                src="/public/1765816654791.jpeg"
                 alt="Forum de Paris 2023"
                 className="w-full h-full object-cover"
               />
