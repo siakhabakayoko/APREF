@@ -68,7 +68,7 @@ export function AppSidebar() {
     const pathname = usePathname()
 
     return (
-        <Sidebar collapsible="none" className="border-r h-svh">
+        <Sidebar collapsible="none" className="border-r h-svh sticky top-0">
             <SidebarHeader className="flex items-center justify-center py-4">
                 <div className="font-bold text-xl text-primary flex items-center gap-2">
                     <Image
