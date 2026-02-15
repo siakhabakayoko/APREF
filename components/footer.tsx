@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Mail, MapPin } from "lucide-react"
+import { Mail, MapPin, Facebook, Linkedin, Twitter } from "lucide-react"
 
 export function Footer() {
   return (
@@ -56,9 +56,23 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3 text-background/70">
                 <MapPin className="w-5 h-5 text-secondary shrink-0" />
-                <span>Paris, France</span>
+                <span>Salon des Préfets – Place Beauvau, 75008 Paris</span>
               </li>
             </ul>
+            <div className="mt-6 flex gap-4">
+              <a href="https://www.facebook.com/AssoAPREF/?locale=fr_FR" target="_blank" rel="noopener noreferrer" className="text-background/70 hover:text-white transition-colors">
+                <Facebook className="w-5 h-5" />
+                <span className="sr-only">Facebook</span>
+              </a>
+              <a href="https://fr.linkedin.com/company/association-des-prefets-et-des-representants-de-l-etat-de-la-francophonie-apref-" target="_blank" rel="noopener noreferrer" className="text-background/70 hover:text-white transition-colors">
+                <Linkedin className="w-5 h-5" />
+                <span className="sr-only">LinkedIn</span>
+              </a>
+              <a href="https://x.com/APREF2" target="_blank" rel="noopener noreferrer" className="text-background/70 hover:text-white transition-colors">
+                <Twitter className="w-5 h-5" />
+                <span className="sr-only">X</span>
+              </a>
+            </div>
           </div>
         </div>
 
