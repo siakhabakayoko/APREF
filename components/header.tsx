@@ -3,8 +3,10 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import { MembershipModal } from "@/components/membership-modal"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -54,11 +56,12 @@ export function Header() {
                 Connexion
               </Button>
             </Link>
-            <Link href="#contact">
+
+            <MembershipModal>
               <Button className="hover:bg-secondary/90 text-secondary-foreground bg-chart-2">
                 Adhérer
               </Button>
-            </Link>
+            </MembershipModal>
           </div>
 
           {/* Mobile Menu Button */}
@@ -86,11 +89,12 @@ export function Header() {
                   Connexion
                 </Button>
               </Link>
-              <Link href="#contact" onClick={() => setIsOpen(false)}>
+
+              <MembershipModal>
                 <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground mt-2 w-full">
                   Adhérer
                 </Button>
-              </Link>
+              </MembershipModal>
             </nav>
           </div>
         )}

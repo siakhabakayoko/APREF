@@ -14,7 +14,8 @@ import {
 import { ArrowRight, CheckCircle, AlertCircle } from "lucide-react"
 import { submitMembershipRequest } from "@/app/actions"
 
-export function MembershipModal() {
+
+export function MembershipModal({ children }: { children?: React.ReactNode }) {
     const [membershipStatus, setMembershipStatus] = useState<{ success?: string; error?: string } | null>(null)
     const [membershipLoading, setMembershipLoading] = useState(false)
     const [open, setOpen] = useState(false)
@@ -36,13 +37,15 @@ export function MembershipModal() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button
-                    size="lg"
-                    className="bg-secondary hover:bg-secondary/90 text-secondary-foreground gap-2 mt-6"
-                >
-                    Demande d'adhésion
-                    <ArrowRight className="w-4 h-4" />
-                </Button>
+                {children || (
+                    <Button
+                        size="lg"
+                        className="bg-secondary hover:bg-secondary/90 text-secondary-foreground gap-2 mt-6"
+                    >
+                        Demande d'adhésion
+                        <ArrowRight className="w-4 h-4" />
+                    </Button>
+                )}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>

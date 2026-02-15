@@ -2,8 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+
 import { ArrowRight, Users, Globe2, Calendar } from "lucide-react"
 import RotatingEarth from "@/components/rotating-earth"
+import { MembershipModal } from "@/components/membership-modal"
 
 export function HeroSection() {
   return (
@@ -59,12 +61,13 @@ export function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="#contact">
+
+              <MembershipModal>
                 <Button size="lg" className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input w-full sm:w-auto">
                   Rejoindre l'APREF
                   <ArrowRight className="w-4 h-4" />
                 </Button>
-              </Link>
+              </MembershipModal>
               <Link href="#about">
                 <Button size="lg" variant="outline" className="hover:bg-accent bg-transparent border-chart-2 text-chart-2 w-full sm:w-auto">
                   En savoir plus
