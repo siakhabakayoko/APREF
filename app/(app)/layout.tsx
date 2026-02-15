@@ -1,5 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { BottomNav } from "@/components/bottom-nav"
 import { Separator } from "@/components/ui/separator"
 import { ForceChangePassword } from "@/components/auth/force-change-password"
 import {
@@ -18,8 +19,10 @@ export default function AppLayout({
 }) {
     return (
         <SidebarProvider>
-            <AppSidebar />
-            <main className="flex-1 overflow-x-hidden">
+            <div className="hidden md:block">
+                <AppSidebar />
+            </div>
+            <main className="flex-1 overflow-x-hidden pb-16 md:pb-0">
                 <ForceChangePassword />
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
 
@@ -36,6 +39,7 @@ export default function AppLayout({
                     {children}
                 </div>
             </main>
+            <BottomNav />
         </SidebarProvider>
     )
 }
