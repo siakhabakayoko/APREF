@@ -66,10 +66,10 @@ export function Footer() {
         <div className="border-t border-background/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-background/50">© {new Date().getFullYear()} APREF. Tous droits réservés.</p>
           <div className="flex items-center gap-6">
-            <Link href="#" className="text-sm text-background/50 hover:text-background transition-colors">
+            <Link href="/mentions-legales" className="text-sm text-background/50 hover:text-background transition-colors">
               Mentions légales
             </Link>
-            <Link href="#" className="text-sm text-background/50 hover:text-background transition-colors">
+            <Link href="/politique-confidentialite" className="text-sm text-background/50 hover:text-background transition-colors">
               Politique de confidentialité
             </Link>
           </div>
