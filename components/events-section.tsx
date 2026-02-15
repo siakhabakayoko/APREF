@@ -42,8 +42,8 @@ export function EventsSection() {
           <div className="relative rounded-3xl overflow-hidden p-8 md:p-10 text-white">
             {/* Background image */}
             <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: "url('/public/BackgroundAPREF.png')" }}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: "url('/BackgroundAPREF.png')" }}
             />
             {/* Overlay for better text readability */}
             <div className="absolute inset-0 bg-[rgba(1,5,61,0.375)]" />
