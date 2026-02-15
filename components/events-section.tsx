@@ -43,7 +43,7 @@ export function EventsSection() {
             {/* Background image */}
             <div
               className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: "url('/images/event-gradient-bg.png')" }}
+              style={{ backgroundImage: "url('/public/BackgroundAPREF.png')" }}
             />
             {/* Overlay for better text readability */}
             <div className="absolute inset-0 bg-[rgba(1,5,61,0.375)]" />
