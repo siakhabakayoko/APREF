@@ -1,39 +1,32 @@
 -- Create newsletter_subscriptions table
 CREATE TABLE IF NOT EXISTS newsletter_subscriptions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) NOT NULL UNIQUE,
-  name VARCHAR(255),
-  country VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  email TEXT NOT NULL UNIQUE,
+  full_name TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- Create membership_requests table
 CREATE TABLE IF NOT EXISTS membership_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  full_name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  phone VARCHAR(20),
-  country VARCHAR(255) NOT NULL,
-  position VARCHAR(255) NOT NULL,
-  organization VARCHAR(255),
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  country TEXT NOT NULL,
+  current_position TEXT NOT NULL,
   motivation TEXT,
-  status VARCHAR(50) DEFAULT 'pending',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- Create contact_messages table
 CREATE TABLE IF NOT EXISTS contact_messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  phone VARCHAR(20),
-  subject VARCHAR(255) NOT NULL,
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  subject TEXT,
   message TEXT NOT NULL,
-  status VARCHAR(50) DEFAULT 'unread',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  read BOOLEAN DEFAULT false
 );
 
 -- Create event_registrations table
