@@ -55,19 +55,26 @@ export function NewsletterSection() {
               ))}
             </div>
 
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 pt-4">
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-3 pt-4">
               <input
-                type="email"
-                name="email"
-                required
-                placeholder="Votre adresse email"
-                className="flex-1 px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                type="text"
+                name="full_name"
+                placeholder="Votre nom complet"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
               />
-              <input type="hidden" name="full_name" value="" />
-              <Button type="submit" disabled={loading} className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input">
-                {loading ? "Envoi..." : "S'inscrire"}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="Votre adresse email"
+                  className="flex-1 px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                />
+                <Button type="submit" disabled={loading} className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input">
+                  {loading ? "Envoi..." : "S'inscrire"}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
             </form>
             {status?.success && (
               <div className="flex items-center gap-2 text-green-600 text-sm pt-2">
