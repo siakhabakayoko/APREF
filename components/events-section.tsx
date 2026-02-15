@@ -137,10 +137,7 @@ export function EventsSection() {
                   "Ce forum a porté sur \"le représentant de l\'État, face aux enjeux de l\'intelligence artificielle.\""
                 }
               </p>
-              <Button variant="outline" className="gap-2 bg-transparent">
-                Voir le récapitulatif
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+
             </div>
           </div>
         </div>
