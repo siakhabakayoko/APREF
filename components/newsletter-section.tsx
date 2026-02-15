@@ -68,7 +68,7 @@ export function NewsletterSection() {
                   name="email"
                   required
                   placeholder="Votre adresse email"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                  className="flex-1 px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                 />
                 <Button type="submit" disabled={loading} className="hover:bg-primary/90 text-primary-foreground gap-2 bg-input">
                   {loading ? "Envoi..." : "S'inscrire"}
@@ -92,25 +92,12 @@ export function NewsletterSection() {
 
           {/* Right Content - Newsletter Cards */}
           <div className="relative">
-            <div className="grid grid-cols-2 gap-4">
-              {[12, 11, 10, 9].map((num, index) => (
-                <div
-                  key={num}
-                  className={`bg-card rounded-xl border border-border p-6 hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer ${index === 0 ? "ring-2 ring-secondary" : ""
-                    }`}
-                >
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-border">
-                    <FileText className="w-6 h-6 text-primary" />
-                  </div>
-                  <h4 className="font-serif font-bold text-foreground mb-1">Lettre n°{num}</h4>
-                  <p className="text-sm text-muted-foreground mb-4">{index === 0 ? "Nouveau !" : "2024"}</p>
-                  <Button variant="ghost" size="sm" className="gap-2 p-0 h-auto text-primary">
-                    <Download className="w-4 h-4" />
-                    Télécharger
-                  </Button>
-                </div>
-              ))}
+            <div style={{ position: 'relative', width: '100%', height: 0, paddingTop: '100.0000%', paddingBottom: 0, boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)', marginTop: '1.6em', marginBottom: '0.9em', overflow: 'hidden', borderRadius: '8px', willChange: 'transform' }}>
+              <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0 }}
+                src="https://www.canva.com/design/DAG_asNVORY/lkxRlf97HJ3XvUeSNOlOzw/view?embed" allowFullScreen allow="fullscreen">
+              </iframe>
             </div>
+            <a href="https://www.canva.com/design/DAG_asNVORY/lkxRlf97HJ3XvUeSNOlOzw/view?utm_content=DAG_asNVORY&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener noreferrer">APREF - La lettre - Numéro 13</a> par Siakha Bakayoko
           </div>
         </div>
       </div>
