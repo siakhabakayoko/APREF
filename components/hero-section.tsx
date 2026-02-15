@@ -21,12 +21,6 @@ export function HeroSection() {
           style={{ background: "radial-gradient(circle, #009C89 0%, transparent 70%)" }}
         />
 
-        {/* Blue glow - bottom right */}
-
-
-        {/* Violet glow - center right */}
-
-
         {/* Orange glow - subtle accent top */}
         <div
           className="absolute top-0 left-1/3 w-[400px] h-[400px] rounded-full blur-[120px] opacity-20"
